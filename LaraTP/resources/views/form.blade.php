@@ -1,30 +1,47 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="fr">
-
+<!DOCTYPE html>
+<html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
 <head>
-    <title>Upload d'une image sur le serveur !</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>Laravel</title>
+
+    <!-- Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700&display=swap" rel="stylesheet">
+
+    <style>
+        body {
+            font-family: 'Nunito';
+        }
+    </style>
 </head>
-
 <body>
-    <?php
-    if (!empty($message)) {
-        echo '<p>', "\n";
-        echo "\t\t<strong>", htmlspecialchars($message), "</strong>\n";
-        echo "\t</p>\n\n";
-    }
-    ?>
-    <!-- Debut du formulaire -->
-    <form enctype="multipart/form-data" action="<?php echo htmlspecialchars($_SERVER['PHP_SELF']); ?>" method="post">
-        <fieldset>
-            <legend>Formulaire</legend>
-            <p>
-                <label for="fichier_a_uploader" title="Recherchez le fichier à uploader !">Envoyer le fichier :</label>
-                <input name="fichier" type="file" id="fichier_a_uploader" />
-                <input type="submit" name="submit" value="Uploader" />
-            </p>
-        </fieldset>
-    </form>
-    <!-- Fin du formulaire -->
-</body>
+<!-- if validation in the controller fails, show the errors -->
+@if ($errors->any())
+   <div class="alert alert-danger">
+     <ul>
+     @foreach ($errors->all() as $error)
+        <li>{{ $error }}</li>
+     @endforeach
+     </ul>
+   </div>
+@endif
 
+<div>
+
+<form action="{{ route('images.store') }}" method="post" enctype="multipart/form-data">
+        <!-- Add CSRF Token -->
+        @csrf
+    <div class="form-group">
+        <label>Product Name</label>
+        <input type="text" class="form-control" name="name" required>
+    </div>
+    <div class="form-group">
+        <input type="file" name="file" required>
+    </div>
+    <button type="submit">Submit</button>
+</form>
+
+</div>
+</body>
 </html>
